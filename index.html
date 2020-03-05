@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>index</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- p5 --> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script> 
+<!-- ml5 --> 
+<script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+</head>
+
+<body>
+
+<script>
+	// Video
+    let video;
+	let faceapi;
+	let detections;
+	
+	let open;
+	let close;
+	
+	var r;
+	var whisperOn = false;
+	var bgTrack;
+	var face = [];
+	var toggled = false;
+  
+    // Step 1: Load the model
+	function preload(){
+		bgTrack = loadSound("bg.mp3");
+		open = loadImage("open.jpg");
+		close = loadImage("close.jpg");
+		for (var i = 0; i < 4; i++){
+			face[i] = loadSound((i+1) + ".wav");
+		}
+	}
+	
+	//Step 2: classify
+    function setup() {
+		r = int(random(4));
+        cnv = createCanvas(1680, 1050);
+		//click canvas to turn sound on
+		cnv.mousePressed(toggleSound);
+		for (var i = 0; i < 4; i++){
+			face[i].playMode('untilDone');
+		}
+		face[1].setVolume(.6);
+		face[2].setVolume(.6);
+		//bgTrack.setVolume();
+        // Create the video
+        video = createCapture(VIDEO);
+        video.hide();
+		//initialize face api
+		faceapi = ml5.faceApi(video, faceapiReady); 
+    }
+	
+
+	function faceapiReady(){
+			console.log('faceAPI is ready!');
+			faceapi.detect(gotApiResults);
+		}
+		
+    function gotApiResults(error, results) {
+        if (error) {
+            console.error(error);
+            return
+        }
+        else {
+            //console.log(results);
+            detections = results;
+        }
+    }
+      
+    function draw() {
+        background(0);
+		image(close, 0, 0, cnv.width, cnv.height);
+        //image(video, 0, 0);
+
+        // Step 4: Draw the label
+        fill(255);
+        textSize(50);
+        textAlign(CENTER);
+
+//		console.log("ready to detect");
+		if (detections) {
+            if (detections.length > 0) {
+				image(open, 0, 0, cnv.width, cnv.height);
+				//face[int(random(4))].play();
+				for (var u = r+1; u<4; u++) {
+					face[u].stop();
+				}
+				for (var l = r-1; l>-1; l--) {
+					face[l].stop();
+				}
+				face[r].loop();
+				
+            } else {
+				face[r].setLoop(false);
+				newRandom();
+				//face[4].stop();
+				//face[int(random(4))].stop();
+			}
+		}
+		else {
+			text("Press f key for fullscreen, click mouse for sound.", width/7, height/4, width*5/7, height*.4);
+			text("By Skye Hoffman. Special thanks to Emmy Cao, Jessica Lam, and Kento Watanabe.", width/7, height*.35, width*5/7, height/3);
+		}
+		faceapi.detect(gotApiResults) //run faceapi again
+    }
+
+function toggleSound() {
+  if (!toggled) {
+	  userStartAudio();
+  bgTrack.loop();
+toggled = true;
+  }
+}
+	function newRandom() {
+		if (face[r].isPlaying()==false) {
+			r = int(random(4));
+			console.log(r);
+		}
+	}
+	function keyPressed() {
+      if (key == 'f') {	
+        let fs = fullscreen();
+        fullscreen(!fs);
+      }
+    }
+	
+</script> 
+
+	
+</body>
+</html>
