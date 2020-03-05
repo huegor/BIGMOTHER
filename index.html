@@ -85,8 +85,8 @@
         textSize(50);
         textAlign(CENTER);
 
-//		console.log("ready to detect");
-		if (detections) {
+	//console.log("ready to detect");
+	if (detections) {
             if (detections.length > 0) {
 				image(open, 0, 0, cnv.width, cnv.height);
 				//face[int(random(4))].play();
@@ -98,7 +98,7 @@
 				}
 				face[r].loop();
 				
-            } else {
+            		} else {
 				face[r].setLoop(false);
 				newRandom();
 				//face[4].stop();
@@ -110,19 +110,19 @@
 			text("By Skye Hoffman. Special thanks to Emmy Cao, Jessica Lam, and Kento Watanabe.", width/7, height*.35, width*5/7, height/3);
 		}
 		faceapi.detect(gotApiResults) //run faceapi again
-    }
+    	}
 
-function toggleSound() {
-  if (!toggled) {
-	  userStartAudio();
-  bgTrack.loop();
-toggled = true;
-  }
-}
+	function toggleSound() {
+	  if (!toggled) {
+		  userStartAudio();
+	  bgTrack.loop();
+	toggled = true;
+	  }
+	}
 	function newRandom() {
 		if (face[r].isPlaying()==false) {
 			r = int(random(4));
-			console.log(r);
+			//console.log(r);
 		}
 	}
 	function keyPressed() {
@@ -131,7 +131,6 @@ toggled = true;
         fullscreen(!fs);
       }
     }
-	
 </script> 
 
 	
