@@ -50,7 +50,6 @@
 		}
 		face[1].setVolume(.6);
 		face[2].setVolume(.6);
-		//bgTrack.setVolume();
         // Create the video
         video = createCapture(VIDEO);
         video.hide();
@@ -99,15 +98,14 @@
 				face[r].loop();
 				
             		} else {
-				face[r].setLoop(false);
+				face[r].stop();
 				newRandom();
-				//face[4].stop();
-				//face[int(random(4))].stop();
 			}
 		}
 		else {
-			text("Press f key for fullscreen, click mouse for sound.", width/7, height/4, width*5/7, height*.4);
-			text("By Skye Hoffman. Special thanks to Emmy Cao, Jessica Lam, and Kento Watanabe.", width/7, height*.35, width*5/7, height/3);
+			text("Press f key for fullscreen, click mouse for sound.", width/7, height/5, width*5/7, height*.4);
+			text("Allow camera to enable face detections (no, it's not being sent to Zuckerberg or Google or the government.)", width/7, height*.3, width*5/7, height*.4);
+			text("By Skye Hoffman. Special thanks to Emmy Cao, Jessica Lam, and Kento Watanabe.", width/7, height*.45, width*5/7, height/3);
 		}
 		faceapi.detect(gotApiResults) //run faceapi again
     	}
@@ -116,7 +114,7 @@
 	  if (!toggled) {
 		  userStartAudio();
 	  bgTrack.loop();
-	toggled = true;
+		toggled = true;
 	  }
 	}
 	function newRandom() {
