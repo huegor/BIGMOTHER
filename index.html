@@ -114,13 +114,13 @@
 		faceapi.detect(gotApiResults) //run faceapi again
     }
 
-function toggleSound() {
-  if (!toggled) {
-	  userStartAudio();
-  bgTrack.loop();
-toggled = true;
-  }
-}
+	function toggleSound() {
+	  if (!toggled) {
+		  userStartAudio();
+		  bgTrack.loop();
+		  toggled = true;
+	  }
+	}
 	function newRandom() {
 		if (face[r].isPlaying()==false) {
 			r = int(random(4));
