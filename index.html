@@ -42,7 +42,7 @@
 	//Step 2: classify
     function setup() {
 		r = int(random(4));
-        cnv = createCanvas(1680, 1050);
+        cnv = createCanvas(screen.width, screen.height);
 		//click canvas to turn sound on
 		cnv.mousePressed(toggleSound);
 		for (var i = 0; i < 4; i++){
@@ -50,11 +50,13 @@
 		}
 		face[1].setVolume(.6);
 		face[2].setVolume(.6);
+		//bgTrack.setVolume();
         // Create the video
         video = createCapture(VIDEO);
         video.hide();
 		//initialize face api
 		faceapi = ml5.faceApi(video, faceapiReady); 
+		imageMode(CENTER);
     }
 	
 
@@ -76,18 +78,18 @@
       
     function draw() {
         background(0);
-		image(close, 0, 0, cnv.width, cnv.height);
+		image(close, width/2, height/2, width, height);
         //image(video, 0, 0);
 
         // Step 4: Draw the label
         fill(255);
-        textSize(50);
+        textSize(45);
         textAlign(CENTER);
 
-	//console.log("ready to detect");
-	if (detections) {
+//		console.log("ready to detect");
+		if (detections) {
             if (detections.length > 0) {
-				image(open, 0, 0, cnv.width, cnv.height);
+				image(open, width/2, height/2, width, height);
 				//face[int(random(4))].play();
 				for (var u = r+1; u<4; u++) {
 					face[u].stop();
@@ -97,9 +99,11 @@
 				}
 				face[r].loop();
 				
-            		} else {
+            } else {
 				face[r].stop();
 				newRandom();
+				//face[4].stop();
+				//face[int(random(4))].stop();
 			}
 		}
 		else {
@@ -108,15 +112,15 @@
 			text("By Skye Hoffman. Special thanks to Emmy Cao, Jessica Lam, and Kento Watanabe.", width/7, height*.45, width*5/7, height/3);
 		}
 		faceapi.detect(gotApiResults) //run faceapi again
-    	}
+    }
 
-	function toggleSound() {
-	  if (!toggled) {
-		  userStartAudio();
-	  bgTrack.loop();
-		toggled = true;
-	  }
-	}
+function toggleSound() {
+  if (!toggled) {
+	  userStartAudio();
+  bgTrack.loop();
+toggled = true;
+  }
+}
 	function newRandom() {
 		if (face[r].isPlaying()==false) {
 			r = int(random(4));
@@ -129,6 +133,7 @@
         fullscreen(!fs);
       }
     }
+	
 </script> 
 
 	
